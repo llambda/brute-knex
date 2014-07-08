@@ -1,11 +1,11 @@
 {
   "name": "express-brute-redis",
   "version": "0.0.1",
-  "description": "A Redis store for express-brute",
+  "description": "A Knex store for express-brute",
   "keywords": [
     "express",
     "brute",
-    "redis"
+    "knex"
   ],
   "license": "BSD",
   "private": false,
@@ -14,7 +14,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:AdamPflug/express-brute-redis.git"
+    "url": "git@github.com:llambda/express-brute-knex.git"
   },
   "devDependencies": {
     "jasmine-node": "~1.11.0",
@@ -22,8 +22,8 @@
     "async": "~0.2.9"
   },
   "dependencies": {
-    "underscore": "~1.5.1",
-    "redis": "~0.10.0",
-    "express-brute": "~0.4.2"
+    "express-brute": "~0.4.2",
+    "knex": "^0.6.20",
+    "lodash": "^2.4.1"
   }
 }

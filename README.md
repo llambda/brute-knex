@@ -1,23 +1,23 @@
-express-brute-redis
+express-brute-knex
 ===================
 [![Build Status](https://travis-ci.org/AdamPflug/express-brute-redis.png?branch=master)](https://travis-ci.org/AdamPflug/express-brute-redis)
 [![NPM version](https://badge.fury.io/js/express-brute-redis.png)](http://badge.fury.io/js/express-brute-redis)
 
-A Redis store for [express-brute](https://github.com/AdamPflug/express-brute)
+A Knex store for [express-brute](https://github.com/AdamPflug/express-brute)
 
 Installation
 ------------
   via npm:
 
-      $ npm install express-brute-redis
+      $ npm install express-brute-knex
 
 Usage
 -----
 ``` js
 var ExpressBrute = require('express-brute'),
-	RedisStore = require('express-brute-redis');
+	RedisStore = require('express-brute-knex');
 
-var store = new RedisStore({
+var store = new KnexStore({
 	host: '127.0.0.1',
 	port: 6379
 });

@@ -1,6 +1,6 @@
-var RedisMock = require('../mock/RedisMock'),
+var KnexMock = require('../mock/RedisMock'),
     proxyquire = require('proxyquire').noCallThru();
-var RedisStore = proxyquire('../index', {'redis': RedisMock});
+var KnexStore = proxyquire('../index', {'knex': KnexMock});
 
 describe("Express brute redis store", function () {
 	var instance, callback, store, count=0;
@@ -22,7 +22,7 @@ describe("Express brute redis store", function () {
 		});
 
 		waitsFor(function () { return callback.calls.length == 1; });
-		
+
 		runs(function () {
 			expect(callback).toHaveBeenCalledWith(null);
 
@@ -44,7 +44,7 @@ describe("Express brute redis store", function () {
 		});
 
 		waitsFor(function () { return callback.calls.length == 1; });
-		
+
 		runs(function () {
 			expect(callback).toHaveBeenCalledWith(null);
 
@@ -110,7 +110,7 @@ describe("Express brute redis store", function () {
 		});
 
 		waitsFor(function () { return callback.calls.length == 1; });
-		
+
 		runs(function () {
 			expect(callback).toHaveBeenCalledWith(null);
 
@@ -150,7 +150,7 @@ describe("Express brute redis store", function () {
 		});
 
 		waitsFor(function () { return callback.calls.length == 1; });
-		
+
 		runs(function () {
 			expect(callback).toHaveBeenCalledWith(null);
 		});

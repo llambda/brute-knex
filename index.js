@@ -1,5 +1,5 @@
 var AbstractClientStore = require('express-brute/lib/AbstractClientStore'),
-    _ = require('lodash')
+    _ = require('lodash');
 
 var KnexStore = module.exports = function (options) {
   var that = this;
@@ -7,7 +7,12 @@ var KnexStore = module.exports = function (options) {
 	this.options = _.extend({}, KnexStore.defaults, options);
 	this.knexOptions = _(this.options).clone();
 
-  this.knex = require('knex')(this.options);
+  if (this.options.knex) {
+    this.knex = this.options.knex;
+  } else {
+    this.knex = require('knex')(KnexStore.defaultsKnex);
+  }
+
   this.ready = this.knex.schema.hasTable(this.options.tablename)
               .then(function (exists) {
                 if (!exists) {
@@ -97,10 +102,12 @@ KnexStore.prototype.reset = function (key, callback) {
 	});
 };
 KnexStore.defaults = {
-	client: 'sqlite3',
-  debug:true,
-  connection: {
-    filename: "./express-brute.sqlite"
-  },
   tablename: 'brute'
 };
+
+KnexStore.defaultsKnex = {
+  client: 'sqlite3',
+  connection: {
+    filename: "./express-brute-knex.sqlite"
+  }
+}

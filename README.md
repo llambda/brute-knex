@@ -12,9 +12,24 @@ Usage
 -----
 ``` js
 var ExpressBrute = require('express-brute'),
-	KnexStore = require('express-brute-knex');
+    KnexStore = require('express-brute-knex'),
+    postgresknex = require('knex').initialize({
+      debug: true,
+      client: 'pg',
+      connection: {
+        host     : '127.0.0.1',
+        user     : 'brute',
+        password : '',
+        database : 'brute',
+        charset  : 'utf8',
+      }
+    });
 
-var store = new KnexStore({});
+var store = new KnexStore({
+  tablename: 'brute',
+  knex: postgresknex
+});
+
 var bruteforce = new ExpressBrute(store);
 
 app.post('/auth',
@@ -27,7 +42,8 @@ app.post('/auth',
 
 Options
 -------
-- `tablename`         Table name (default 'brute')
+- `tablename`         Table name (default 'brute') to store records in
+- `knex`              knex instance to use. If not provided, defaults to a sqlite3 database named ./express-brute-knex.sqlite
 
 
 For details see [node-redis](https://github.com/mranney/node_redis).

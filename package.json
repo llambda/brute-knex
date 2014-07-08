@@ -1,5 +1,5 @@
 {
-  "name": "express-brute-redis",
+  "name": "express-brute-knex",
   "version": "0.0.1",
   "description": "A Knex store for express-brute",
   "keywords": [
@@ -10,16 +10,15 @@
   "license": "BSD",
   "private": false,
   "scripts": {
-    "test": "node node_modules/jasmine-node/lib/jasmine-node/cli.js --captureExceptions --matchall spec"
+    "test": "cd spec && mocha"
   },
   "repository": {
     "type": "git",
     "url": "git@github.com:llambda/express-brute-knex.git"
   },
   "devDependencies": {
-    "jasmine-node": "~1.11.0",
-    "proxyquire": "~0.5.0",
-    "async": "~0.2.9"
+    "async": "~0.2.9",
+    "proxyquire": "~0.5.0"
   },
   "dependencies": {
     "express-brute": "~0.4.2",

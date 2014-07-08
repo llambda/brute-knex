@@ -45,5 +45,3 @@ Options
 - `tablename`         Table name (default 'brute') to store records in. Table will be created automatically if necessary.
 - `knex`              knex instance to use. If not provided, defaults to a sqlite3 database named ./express-brute-knex.sqlite
 
-
-For details see [node-redis](https://github.com/mranney/node_redis).

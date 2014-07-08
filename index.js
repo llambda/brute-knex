@@ -1,6 +1,7 @@
 var AbstractClientStore = require('express-brute/lib/AbstractClientStore'),
     Redis = require('redis'),
-    _ = require('underscore');
+    _ = require('lodash'),
+    knex = require('knex')
 
 var RedisStore = module.exports = function (options) {
 	AbstractClientStore.apply(this, arguments);

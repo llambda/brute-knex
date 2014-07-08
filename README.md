@@ -1,6 +1,6 @@
 express-brute-knex
 ===================
-A Knex store for [express-brute](https://github.com/AdamPflug/express-brute)
+A [knex.js](http://knexjs.org/) store for [express-brute](https://github.com/AdamPflug/express-brute)
 
 Installation
 ------------

@@ -70,7 +70,7 @@ describe('Express brute KnexStore', function() {
     })
   })
 
-  it("can reset the count of requests to zero", function (done) {
+  it("can reset (delete) a record", function (done) {
     var curDate = new Date(),
         object = {count: 36713, lastRequest: curDate, firstRequest: curDate},
         key = "reset1.2.3.4";
@@ -83,7 +83,7 @@ describe('Express brute KnexStore', function() {
       return store.get(key);
     })
     .then(function (res) {
-      assert.equal(res.count, 0)
+      assert.equal(res, null)
       done();
     })
   });

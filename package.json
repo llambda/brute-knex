@@ -10,7 +10,7 @@
   "license": "BSD",
   "private": false,
   "scripts": {
-    "test": "cd spec && mocha"
+    "test": "cd spec && mocha sqlitetest && mocha pgtest"
   },
   "repository": {
     "type": "git",

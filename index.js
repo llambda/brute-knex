@@ -14,21 +14,15 @@ var KnexStore = module.exports = function (options) {
     this.knex = require('knex')(KnexStore.defaultsKnex);
   }
 
-  this.ready = this.knex.schema.hasTable(this.options.tablename)
-  .then(function (exists) {
+  that.ready = that.knex.schema.hasTable(that.options.tablename).then(function (exists) {
     if (!exists) {
       return that.knex.schema.createTable(that.options.tablename, function (table) {
         table.string('key')
         table.dateTime('firstRequest')
         table.dateTime('lastRequest')
-        table.integer('lifetime')
+        table.dateTime('lifetime')
         table.integer('count')
       })
-      .catch(function(err) {
-        console.error(err); //not fatal; table could be concurrently created in which case we are OK
-      })
-    } else {
-      return Promise.resolve();
     }
   })
 };
@@ -45,7 +39,7 @@ KnexStore.prototype.set = function (key, value, lifetime, callback) {
           return trx.from(that.options.tablename)
           .insert({
             key: key,
-            lifetime: lifetime,
+            lifetime: new Date(Date.now() + lifetime),
             lastRequest: value.lastRequest,
             firstRequest: value.firstRequest,
             count: value.count
@@ -54,48 +48,48 @@ KnexStore.prototype.set = function (key, value, lifetime, callback) {
           return trx(that.options.tablename)
           .where('key', '=', key)
           .update({
-            lifetime: lifetime,
+            lifetime: new Date(Date.now() + lifetime),
             count: value.count+foundKeys[0].count,
             lastRequest: value.lastRequest
           })
         }
       })
-      .tap(that.clearExpired)
       .then(function (res) {
         if (callback) {
           callback(null);
         }
         return res;
       })
-
     })
   })
 };
 KnexStore.prototype.get = function (key, callback) {
   var that = this;
-  return that.ready.then(function () {
+  return that.ready.tap(function () {
+    return that.clearExpired();
+  })
+  .then(function () {
     return that.knex.select('*')
     .from(that.options.tablename)
     .where('key', '=', key)
-    .then(function (response) {
-      var data = {};
-      if (response[0]) {
-        data.lastRequest = new Date(response[0].lastRequest);
-        data.firstRequest = new Date(response[0].firstRequest);
-        data.count = response[0].count;
-        if (callback) {
-          callback(null, data)
-        }
-        return data;
-      } else {
-        retval = null;
-        if (callback) {
-          callback(null, retval);
-        }
-        return retval;
+  })
+  .then(function (response) {
+    var data = {};
+    if (response[0]) {
+      data.lastRequest = new Date(response[0].lastRequest);
+      data.firstRequest = new Date(response[0].firstRequest);
+      data.count = response[0].count;
+      if (callback) {
+        callback(null, data)
       }
-    })
-    .tap(that.clearExpired)
+      return data;
+    } else {
+      retval = null;
+      if (callback) {
+        callback(null, retval);
+      }
+      return retval;
+    }
   })
 };
 KnexStore.prototype.reset = function (key, callback) {
@@ -111,7 +105,6 @@ KnexStore.prototype.reset = function (key, callback) {
       return res;
     })
   })
-  .tap(that.clearExpired)
 };
 KnexStore.prototype.increment = function (key, lifetime, callback) {
   var that = this;
@@ -123,7 +116,7 @@ KnexStore.prototype.increment = function (key, lifetime, callback) {
         key: key,
         firstRequest: new Date(),
         lastRequest: new Date(),
-        lifetime: lifetime,
+        lifetime: new Date(Date.now() + lifetime),
         count: 1
       })
     }
@@ -134,17 +127,19 @@ KnexStore.prototype.increment = function (key, lifetime, callback) {
     }
     return res;
   })
-  .tap(that.clearExpired)
 };
 
 KnexStore.prototype.clearExpired = function () {
+  // var that = this;
+  // return that
+  // .ready
+  // .then(function () {
+  //   return that.knex(that.options.tablename).del().where('lifetime', '<', new Date());
+  // });
   var that = this;
-  if (this.ready) {
-    return that.ready.tap(function () {
-      return that.knex(that.options.tablename).del().where('firstRequest + lifetime', '<', new Date());
-    })
-  }
+  return that.knex(that.options.tablename).del().where('lifetime', '<', new Date());
 };
+
 
 
 KnexStore.defaults = {
@@ -153,7 +148,7 @@ KnexStore.defaults = {
 
 KnexStore.defaultsKnex = {
   client: 'sqlite3',
-  debug: true,
+  // debug: true,
   connection: {
     filename: "./express-brute-knex.sqlite"
   }

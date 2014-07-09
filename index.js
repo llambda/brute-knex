@@ -1,6 +1,5 @@
 var AbstractClientStore = require('express-brute/lib/AbstractClientStore'),
-  _ = require('lodash'),
-  Promise = require('bluebird')
+  _ = require('lodash')
 
 var KnexStore = module.exports = function (options) {
   var that = this;

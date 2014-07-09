@@ -1,6 +1,7 @@
 express-brute-knex
 ===================
 A [knex.js](http://knexjs.org/) store for [express-brute](https://github.com/AdamPflug/express-brute)
+Tested with sqlite3 and PostgreSQL
 
 Installation
 ------------

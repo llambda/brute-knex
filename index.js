@@ -39,7 +39,7 @@ KnexStore.prototype.set = function (key, value, lifetime, callback) {
           return trx.from(that.options.tablename)
           .insert({
             key: key,
-            lifetime: new Date(Date.now() + lifetime),
+            lifetime: new Date(Date.now() + lifetime  * 1000),
             lastRequest: value.lastRequest,
             firstRequest: value.firstRequest,
             count: value.count
@@ -48,7 +48,7 @@ KnexStore.prototype.set = function (key, value, lifetime, callback) {
           return trx(that.options.tablename)
           .where('key', '=', key)
           .update({
-            lifetime: new Date(Date.now() + lifetime),
+            lifetime: new Date(Date.now() + lifetime  * 1000),
             count: value.count+foundKeys[0].count,
             lastRequest: value.lastRequest
           })
@@ -116,7 +116,7 @@ KnexStore.prototype.increment = function (key, lifetime, callback) {
         key: key,
         firstRequest: new Date(),
         lastRequest: new Date(),
-        lifetime: new Date(Date.now() + lifetime),
+        lifetime: new Date(Date.now() + lifetime * 1000),
         count: 1
       })
     }

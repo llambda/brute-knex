@@ -1,1 +1,1 @@
-express-brute-knex.sqlite
+*.sqlite

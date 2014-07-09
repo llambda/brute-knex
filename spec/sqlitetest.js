@@ -5,15 +5,26 @@ var assert = require('assert');
 var Promise = require('bluebird');
 var fs = require('fs');
 
-if (fs.existsSync('express-brute-knex.sqlite')) {
-  fs.unlinkSync('express-brute-knex.sqlite');
+
+if (fs.existsSync('express-brute-knex-test.sqlite')) {
+  fs.unlinkSync('express-brute-knex-test.sqlite');
 }
+
+sqliteknex = require('knex').initialize({
+  debug: true,
+  client: 'sqlite3',
+  connection: {
+    filename: "express-brute-knex-test.sqlite"
+  }
+});
 
 describe('Express brute KnexStore', function() {
   this.timeout(4000);
 
   var store, callback, store, count=0;
-  store = new KnexStore();
+  store = new KnexStore({
+    knex: sqliteknex
+  });
 
   it("can be instantiated", function () {
     assert(store);

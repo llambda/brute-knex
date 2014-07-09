@@ -1,5 +1,5 @@
 var AbstractClientStore = require('express-brute/lib/AbstractClientStore'),
-  _ = require('lodash')
+  _ = require('lodash');
 
 var KnexStore = module.exports = function (options) {
   var that = this;
@@ -48,7 +48,7 @@ KnexStore.prototype.set = function (key, value, lifetime, callback) {
           .where('key', '=', key)
           .update({
             lifetime: new Date(Date.now() + lifetime  * 1000),
-            count: value.count+foundKeys[0].count,
+            count: value.count,
             lastRequest: value.lastRequest
           })
         }
@@ -96,7 +96,7 @@ KnexStore.prototype.reset = function (key, callback) {
   return that.ready.then(function () {
     return that.knex(that.options.tablename)
     .where('key', '=', key)
-    .update({count:0})
+    .del()
     .then(function (res) {
       if (callback) {
         callback(null);

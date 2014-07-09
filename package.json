@@ -17,8 +17,6 @@
     "url": "git@github.com:llambda/express-brute-knex.git"
   },
   "devDependencies": {
-    "async": "~0.2.9",
-    "proxyquire": "~0.5.0"
   },
   "dependencies": {
     "express-brute": "~0.4.2",

@@ -1,6 +1,6 @@
 {
   "name": "express-brute-knex",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A Knex store for express-brute",
   "keywords": [
     "express",
@@ -18,11 +18,13 @@
   },
   "devDependencies": {
     "bluebird": "^2.3.11",
-    "pg": "^4.1.0"
+    "mocha": "^2.1.0",
+    "pg": "^4.1.0",
+    "sqlite3": "^3.0.5"
   },
   "dependencies": {
     "express-brute": "^0.5.1",
     "knex": "^0.7.3",
-    "lodash": "^2.4.1"
+    "lodash": "^3.3.0"
   }
 }

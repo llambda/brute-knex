@@ -5,7 +5,6 @@ var KnexStore = module.exports = function (options) {
   var self = this;
   AbstractClientStore.apply(this, arguments);
   this.options = _.extend({}, KnexStore.defaults, options);
-  this.knexOptions = _(this.options).clone();
 
   if (this.options.knex) {
     this.knex = this.options.knex;

@@ -19,10 +19,6 @@ sqliteknex = new Knex({
   }
 });
 
-const sqlitestore = new KnexStore({
-  knex: sqliteknex
-});
-
 postgresknex = new Knex({
   debug: true,
   client: 'pg',
@@ -35,19 +31,47 @@ postgresknex = new Knex({
   }
 });
 
-postgresknex.schema.dropTable('brute')
-.catch(function (err) {
-  console.log('already dropped, continuing ' + err);
-})
-.then(function () {
+mysqlknex = new Knex({
+  debug: true,
+  client: 'mysql',
+  connection: {
+    host     : 'localhost',
+    user     : 'travis',
+    password : '',
+    database : 'travis',
+    charset  : 'utf8',
+  },
+  pool: {
+    min: 1,
+    max: 1
+  }
+});
+
+Promise.join((function () {
+  return mysqlknex.schema.dropTable('brute')
+})(), (function () {
+  return postgresknex.schema.dropTable('brute')
+})())
+.finally(
+// finally to ignore drop tables that don't exist errors
+function () {
+  const sqlitestore = new KnexStore({
+    knex: sqliteknex
+  });
 
   const postgresstore = new KnexStore({
     knex: postgresknex
   });
 
+  const mysql = new KnexStore({
+    knex: mysqlknex
+  });
+
+
   var stores = [];
   stores.push([sqlitestore, 'sqlite']);
   stores.push([postgresstore, 'postgres']);
+  stores.push([mysql, 'mysql']);
 
   stores.forEach(function (item) {
 
@@ -77,11 +101,14 @@ postgresknex.schema.dropTable('brute')
 
       store.set('set records', object, 10*1000)
       .tap(function (result) {
-        if (result.rowCount) {
-          console.log(result)
+        if (result[0] === 0 ) {
+          // mysql
+          t.equal(result[0], 0, name +' 1 row should be updated');
+        } else if (result.rowCount) {
+          // postgresql
           t.equal(result.rowCount, 1, name +' 1 row should be updated');
         } else {
-          console.log(result)
+          // sqlite
           t.equal(result[0], 1, name +' 1 row should be updated');
         }       
       })
@@ -137,7 +164,7 @@ postgresknex.schema.dropTable('brute')
         return store.get(key)
       })
       .then(function (result) {
-        t.equal(result.count, 1)
+        t.equal(result.count, 1, 'count should be 1')
       })
     });
 
@@ -159,6 +186,5 @@ postgresknex.schema.dropTable('brute')
     test(name + ' properly destroy', function (t) {
       store.knex.destroy().then(t.end);
     });  
-  })
+  });
 })
-

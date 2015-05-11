@@ -1,7 +1,7 @@
 {
   "name": "express-brute-knex",
   "version": "1.0.1",
-  "description": "A Knex store for express-brute",
+  "description": "A Knex.js store for express-brute",
   "keywords": [
     "express",
     "brute",
@@ -10,21 +10,21 @@
   "license": "ISC",
   "private": false,
   "scripts": {
-    "test": "cd spec && mocha sqlitetest && mocha pgtest"
+    "test": "node test"
   },
   "repository": {
     "type": "git",
     "url": "git@github.com:llambda/express-brute-knex.git"
   },
   "devDependencies": {
-    "bluebird": "^2.3.11",
-    "mocha": "^2.1.0",
+    "bluebird": "^2.9.25",
     "pg": "^4.1.0",
-    "sqlite3": "^3.0.5"
+    "sqlite3": "^3.0.7",
+    "tape": "^4.0.0"
   },
   "dependencies": {
-    "express-brute": "^0.5.1",
-    "knex": "^0.7.3",
-    "lodash": "^3.3.0"
+    "express-brute": "^0.5.3",
+    "knex": "^0.8.3",
+    "lodash": "^3.8.0"
   }
 }

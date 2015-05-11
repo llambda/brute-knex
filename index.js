@@ -1,8 +1,8 @@
-var AbstractClientStore = require('express-brute/lib/AbstractClientStore'),
-  _ = require('lodash');
+var AbstractClientStore = require('express-brute/lib/AbstractClientStore');
+var _ = require('lodash');
 
 var KnexStore = module.exports = function (options) {
-  var that = this;
+  var self = this;
   AbstractClientStore.apply(this, arguments);
   this.options = _.extend({}, KnexStore.defaults, options);
   this.knexOptions = _(this.options).clone();
@@ -13,9 +13,9 @@ var KnexStore = module.exports = function (options) {
     this.knex = require('knex')(KnexStore.defaultsKnex);
   }
 
-  that.ready = that.knex.schema.hasTable(that.options.tablename).then(function (exists) {
+  self.ready = self.knex.schema.hasTable(self.options.tablename).then(function (exists) {
     if (!exists) {
-      return that.knex.schema.createTable(that.options.tablename, function (table) {
+      return self.knex.schema.createTable(self.options.tablename, function (table) {
         table.string('key')
         table.dateTime('firstRequest')
         table.dateTime('lastRequest')
@@ -27,15 +27,15 @@ var KnexStore = module.exports = function (options) {
 };
 KnexStore.prototype = Object.create(AbstractClientStore.prototype);
 KnexStore.prototype.set = function (key, value, lifetime, callback) {
-  var that = this;
+  var self = this;
   lifetime = lifetime || 0;
 
-  return that.ready.then(function () {
-    return that.knex.transaction(function (trx) {
-      return trx.select('*').forUpdate().from(that.options.tablename).where('key', '=', key)
+  return self.ready.then(function () {
+    return self.knex.transaction(function (trx) {
+      return trx.select('*').forUpdate().from(self.options.tablename).where('key', '=', key)
       .then(function (foundKeys) {
         if (foundKeys.length == 0) {
-          return trx.from(that.options.tablename)
+          return trx.from(self.options.tablename)
           .insert({
             key: key,
             lifetime: new Date(Date.now() + lifetime  * 1000),
@@ -44,7 +44,7 @@ KnexStore.prototype.set = function (key, value, lifetime, callback) {
             count: value.count
           })
         } else {
-          return trx(that.options.tablename)
+          return trx(self.options.tablename)
           .where('key', '=', key)
           .update({
             lifetime: new Date(Date.now() + lifetime  * 1000),
@@ -63,13 +63,13 @@ KnexStore.prototype.set = function (key, value, lifetime, callback) {
   })
 };
 KnexStore.prototype.get = function (key, callback) {
-  var that = this;
-  return that.ready.tap(function () {
-    return that.clearExpired();
+  var self = this;
+  return self.ready.tap(function () {
+    return self.clearExpired();
   })
   .then(function () {
-    return that.knex.select('*')
-    .from(that.options.tablename)
+    return self.knex.select('*')
+    .from(self.options.tablename)
     .where('key', '=', key)
   })
   .then(function (response) {
@@ -92,9 +92,9 @@ KnexStore.prototype.get = function (key, callback) {
   })
 };
 KnexStore.prototype.reset = function (key, callback) {
-  var that = this;
-  return that.ready.then(function () {
-    return that.knex(that.options.tablename)
+  var self = this;
+  return self.ready.then(function () {
+    return self.knex(self.options.tablename)
     .where('key', '=', key)
     .del()
     .then(function (res) {
@@ -106,12 +106,12 @@ KnexStore.prototype.reset = function (key, callback) {
   })
 };
 KnexStore.prototype.increment = function (key, lifetime, callback) {
-  var that = this;
-  return that.get(key).then(function (result) {
+  var self = this;
+  return self.get(key).then(function (result) {
     if (result) {
-      return that.knex(that.options.tablename).increment('count', 1).where('key', '=', key)
+      return self.knex(self.options.tablename).increment('count', 1).where('key', '=', key)
     } else {
-      return that.knex(that.options.tablename).insert({
+      return self.knex(self.options.tablename).insert({
         key: key,
         firstRequest: new Date(),
         lastRequest: new Date(),
@@ -129,17 +129,15 @@ KnexStore.prototype.increment = function (key, lifetime, callback) {
 };
 
 KnexStore.prototype.clearExpired = function () {
-  // var that = this;
-  // return that
+  // var self = this;
+  // return self
   // .ready
   // .then(function () {
-  //   return that.knex(that.options.tablename).del().where('lifetime', '<', new Date());
+  //   return self.knex(self.options.tablename).del().where('lifetime', '<', new Date());
   // });
-  var that = this;
-  return that.knex(that.options.tablename).del().where('lifetime', '<', new Date());
+  var self = this;
+  return self.knex(self.options.tablename).del().where('lifetime', '<', new Date());
 };
-
-
 
 KnexStore.defaults = {
   tablename: 'brute'

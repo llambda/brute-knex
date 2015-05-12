@@ -51,9 +51,9 @@ KnexStore.prototype.set = function (key, value, lifetime, callback) {
             lastRequest: value.lastRequest
           })
         }
-      }).asCallback(callback);
+      })
     })
-  })
+  }).asCallback(callback);
 };
 KnexStore.prototype.get = function (key, callback) {
   var self = this;
@@ -66,38 +66,26 @@ KnexStore.prototype.get = function (key, callback) {
     .where('key', '=', key)
   })
   .then(function (response) {
-    var data = {};
+    var o = null;
     if (response[0]) {
-      data.lastRequest = (new Date(response[0].lastRequest)).toISOString();
-      data.firstRequest = (new Date(response[0].firstRequest)).toISOString();
-      data.count = response[0].count;
-      if (callback) {
-        callback(null, data)
-      }
-      return data;
-    } else {
-      retval = null;
-      if (callback) {
-        callback(null, retval);
-      }
-      return retval;
+      o = {};
+      o.lastRequest = new Date(response[0].lastRequest);
+      o.firstRequest = new Date(response[0].firstRequest);
+      o.count = response[0].count;      
     }
-  })
-  .catch(function (err) {
-    if (callback) callback(err);
-  })
+    return o;
+  }).asCallback(callback);
 };
-KnexStore.prototype.reset = function (key, fn) {
+KnexStore.prototype.reset = function (key, callback) {
   var self = this;
   return self.ready.then(function () {
     return self.knex(self.options.tablename)
     .where('key', '=', key)
     .del()
-    .asCallback(fn);
-  })
+  }).asCallback(callback);
 };
 
-KnexStore.prototype.increment = function (key, lifetime, fn) {
+KnexStore.prototype.increment = function (key, lifetime, callback) {
   var self = this;
   return self.get(key).then(function (result) {
     if (result) {
@@ -114,16 +102,16 @@ KnexStore.prototype.increment = function (key, lifetime, fn) {
         count: 1
       })
     }
-  }).asCallback(fn);
+  }).asCallback(callback);
 };
 
-KnexStore.prototype.clearExpired = function () {
+KnexStore.prototype.clearExpired = function (callback) {
   var self = this;
   return self.ready.then(function () {
     return self.knex(self.options.tablename)
     .del()
     .where('lifetime', '<', (new Date()).toISOString());
-  });
+  }).asCallback(callback);
 };
 
 KnexStore.defaults = {

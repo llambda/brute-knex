@@ -16,9 +16,9 @@ var KnexStore = module.exports = function (options) {
     if (!exists) {
       return self.knex.schema.createTable(self.options.tablename, function (table) {
         table.string('key');
-        table.dateTime('firstRequest');
-        table.dateTime('lastRequest');
-        table.dateTime('lifetime');
+        table.timestamp('firstRequest');
+        table.timestamp('lastRequest');
+        table.timestamp('lifetime');
         table.integer('count');
       })
     }
@@ -37,7 +37,7 @@ KnexStore.prototype.set = function (key, value, lifetime, callback) {
           return trx.from(self.options.tablename)
           .insert({
             key: key,
-            lifetime: new Date(Date.now() + lifetime  * 1000),
+            lifetime: (new Date(Date.now() + lifetime  * 1000)).toISOString(),
             lastRequest: value.lastRequest,
             firstRequest: value.firstRequest,
             count: value.count
@@ -46,7 +46,7 @@ KnexStore.prototype.set = function (key, value, lifetime, callback) {
           return trx(self.options.tablename)
           .where('key', '=', key)
           .update({
-            lifetime: new Date(Date.now() + lifetime  * 1000),
+            lifetime: (new Date(Date.now() + lifetime  * 1000)).toISOString(),
             count: value.count,
             lastRequest: value.lastRequest
           })
@@ -68,8 +68,8 @@ KnexStore.prototype.get = function (key, callback) {
   .then(function (response) {
     var data = {};
     if (response[0]) {
-      data.lastRequest = new Date(response[0].lastRequest);
-      data.firstRequest = new Date(response[0].firstRequest);
+      data.lastRequest = (new Date(response[0].lastRequest)).toISOString();
+      data.firstRequest = (new Date(response[0].firstRequest)).toISOString();
       data.count = response[0].count;
       if (callback) {
         callback(null, data)
@@ -101,13 +101,16 @@ KnexStore.prototype.increment = function (key, lifetime, fn) {
   var self = this;
   return self.get(key).then(function (result) {
     if (result) {
-      return self.knex(self.options.tablename).increment('count', 1).where('key', '=', key)
+      return self.knex(self.options.tablename)
+      .increment('count', 1)
+      .where('key', '=', key)
     } else {
-      return self.knex(self.options.tablename).insert({
+      return self.knex(self.options.tablename)
+      .insert({
         key: key,
-        firstRequest: new Date(),
-        lastRequest: new Date(),
-        lifetime: new Date(Date.now() + lifetime * 1000),
+        firstRequest: (new Date()).toISOString(),
+        lastRequest: (new Date()).toISOString(),
+        lifetime: (new Date(Date.now() + lifetime * 1000)).toISOString(),
         count: 1
       })
     }
@@ -117,7 +120,9 @@ KnexStore.prototype.increment = function (key, lifetime, fn) {
 KnexStore.prototype.clearExpired = function () {
   var self = this;
   return self.ready.then(function () {
-    return self.knex(self.options.tablename).del().where('lifetime', '<', new Date());
+    return self.knex(self.options.tablename)
+    .del()
+    .where('lifetime', '<', (new Date()).toISOString());
   });
 };
 

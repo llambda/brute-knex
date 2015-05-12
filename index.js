@@ -1,3 +1,4 @@
+'use strict';
 var AbstractClientStore = require('express-brute/lib/AbstractClientStore');
 var _ = require('lodash');
 

@@ -1,3 +1,4 @@
+'use strict';
 const Promise = require('bluebird');
 Promise.longStackTraces();
 
@@ -11,7 +12,7 @@ if (fs.existsSync('express-brute-knex-test.sqlite')) {
   fs.unlinkSync('express-brute-knex-test.sqlite');
 }
 
-sqliteknex = new Knex({
+const sqliteknex = new Knex({
   debug: true,
   client: 'sqlite3',
   connection: {
@@ -19,7 +20,7 @@ sqliteknex = new Knex({
   }
 });
 
-postgresknex = new Knex({
+const postgresknex = new Knex({
   debug: true,
   client: 'pg',
   connection: {
@@ -31,7 +32,7 @@ postgresknex = new Knex({
   }
 });
 
-mysqlknex = new Knex({
+const mysqlknex = new Knex({
   debug: true,
   client: 'mysql',
   connection: {

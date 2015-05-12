@@ -19,8 +19,6 @@
 
 ### Usage
 
-### Usage
-
 Refer to the [example application](https://github.com/llambda/brute-knex/blob/master/example.js).
 
 ### Options

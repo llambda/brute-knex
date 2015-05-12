@@ -50,8 +50,18 @@ const mysqlknex = new Knex({
 
 Promise.join((function () {
   return mysqlknex.schema.dropTable('brute')
+  .catch(function (error) {
+    if (!error.message.indexOf('does not exist') > 0) {
+      throw error;
+    }
+  })
 })(), (function () {
   return postgresknex.schema.dropTable('brute')
+  .catch(function (error) {
+    if (!error.message.indexOf('does not exist') > 0) {
+      throw error;
+    }
+  })
 })())
 .finally(
 // finally to ignore drop tables that don't exist errors

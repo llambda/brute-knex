@@ -176,7 +176,7 @@ function () {
 
       store.increment('expiring', 0)
       .then(function (result) {
-        return store.get('expiring').delay(100); // give a delay for DB consistency, though it may not work every time.
+        return store.get('expiring');
       })
       .then(function (result) {
         t.equal(result, null);

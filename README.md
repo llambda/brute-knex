@@ -1,6 +1,4 @@
-express-brute-knex
-===================
-
+# express-brute-knex
 
 [![NPM Version][npm-version-image]][npm-url]
 [![NPM Downloads][npm-downloads-image]][npm-url]
@@ -11,49 +9,51 @@ express-brute-knex
 
 [![NPM][npm-image]][npm-url]
 
-A [knex.js](http://knexjs.org/) store for [express-brute](https://github.com/AdamPflug/express-brute)
-Tested with sqlite3 and PostgreSQL
+## A [knex.js](http://knexjs.org/) store for [express-brute](https://github.com/AdamPflug/express-brute).
 
-Installation
-------------
+### Installation
+
   via npm:
 
       $ npm install express-brute-knex
 
-Usage
------
+### Usage
+
 ``` js
-var ExpressBrute = require('express-brute'),
-    KnexStore = require('express-brute-knex'),
-    postgresknex = require('knex').initialize({
-      debug: true,
-      client: 'pg',
-      connection: {
-        host     : '127.0.0.1',
-        user     : 'brute',
-        password : '',
-        database : 'brute',
-        charset  : 'utf8',
-      }
-    });
+const ExpressBrute = require('express-brute');
+const KnexStore = require('express-brute-knex');
+const Knex = require('knex');
+const knex = Knex({
+  debug: true,
+  client: 'pg',
+  connection: {
+    host: '127.0.0.1',
+    user: 'brute',
+    password: '',
+    database: 'brute',
+    charset: 'utf8',
+ }
+});
 
 var store = new KnexStore({
   tablename: 'brute',
-  knex: postgresknex
+  knex: knex
 });
 
-var bruteforce = new ExpressBrute(store);
+const bruteforce = new ExpressBrute(store);
 
+const express = require('express');
+const app = express();
 app.post('/auth',
-	bruteforce.prevent, // error 403 if we hit this route too often
-	function (req, res, next) {
-		res.send('Success!');
-	}
+  bruteforce.prevent, // 403 if we hit this route too often
+  function (req, res, next) {
+    res.send('Success!');
+  }
 );
 ```
 
-Options
--------
+### Options
+
 - `tablename`         Table name (default 'brute') to store records in. Table will be created automatically if necessary.
 - `knex`              knex instance to use. If not provided, defaults to a sqlite3 database named ./express-brute-knex.sqlite
 

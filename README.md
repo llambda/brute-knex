@@ -19,38 +19,9 @@
 
 ### Usage
 
-``` js
-const ExpressBrute = require('express-brute');
-const KnexStore = require('express-brute-knex');
-const Knex = require('knex');
-const knex = Knex({
-  debug: true,
-  client: 'pg',
-  connection: {
-    host: '127.0.0.1',
-    user: 'brute',
-    password: '',
-    database: 'brute',
-    charset: 'utf8',
- }
-});
+### Usage
 
-var store = new KnexStore({
-  tablename: 'brute',
-  knex: knex
-});
-
-const bruteforce = new ExpressBrute(store);
-
-const express = require('express');
-const app = express();
-app.post('/auth',
-  bruteforce.prevent, // 403 if we hit this route too often
-  function (req, res, next) {
-    res.send('Success!');
-  }
-);
-```
+Refer to the [example application](https://github.com/llambda/express-brute-knex/blob/master/example.js).
 
 ### Options
 

@@ -123,6 +123,6 @@ KnexStore.defaultsKnex = {
   client: 'sqlite3',
   // debug: true,
   connection: {
-    filename: "./express-brute-knex.sqlite"
+    filename: "./brute-knex.sqlite"
   }
 }

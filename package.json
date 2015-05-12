@@ -1,5 +1,5 @@
 {
-  "name": "express-brute-knex",
+  "name": "brute-knex",
   "version": "2.0.0",
   "description": "A Knex.js store for express-brute",
   "keywords": [
@@ -14,7 +14,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:llambda/express-brute-knex.git"
+    "url": "git@github.com:llambda/brute-knex.git"
   },
   "devDependencies": {
     "bluebird": "^2.9.25",

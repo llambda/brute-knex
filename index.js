@@ -4,6 +4,7 @@ var _ = require('lodash');
 
 var KnexStore = module.exports = function (options) {
   var self = this;
+  
   AbstractClientStore.apply(this, arguments);
   this.options = _.extend({}, KnexStore.defaults, options);
 
@@ -14,7 +15,7 @@ var KnexStore = module.exports = function (options) {
   }
 
   self.ready = self.knex.schema.hasTable(self.options.tablename).then(function (exists) {
-    if (!exists) {
+    if (!exists && options.createTable) {
       return self.knex.schema.createTable(self.options.tablename, function (table) {
         table.string('key');
         table.timestamp('firstRequest');
@@ -116,7 +117,8 @@ KnexStore.prototype.clearExpired = function (callback) {
 };
 
 KnexStore.defaults = {
-  tablename: 'brute'
+  tablename: 'brute',
+  createTable: true
 };
 
 KnexStore.defaultsKnex = {

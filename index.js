@@ -1,12 +1,12 @@
 'use strict';
 var AbstractClientStore = require('express-brute/lib/AbstractClientStore');
-var _ = require('lodash');
 
 var KnexStore = module.exports = function (options) {
   var self = this;
-  
+  options = options || Object.create(null);
+
   AbstractClientStore.apply(this, arguments);
-  this.options = _.extend({}, KnexStore.defaults, options);
+  this.options = Object.assign(Object.create(null), KnexStore.defaults, options);
 
   if (this.options.knex) {
     this.knex = this.options.knex;
@@ -73,7 +73,7 @@ KnexStore.prototype.get = function (key, callback) {
       o = {};
       o.lastRequest = new Date(response[0].lastRequest);
       o.firstRequest = new Date(response[0].firstRequest);
-      o.count = response[0].count;      
+      o.count = response[0].count;
     }
     return o;
   }).asCallback(callback);

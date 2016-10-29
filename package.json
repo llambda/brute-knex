@@ -10,7 +10,7 @@
   "license": "ISC",
   "private": false,
   "scripts": {
-    "test": "node --harmony test"
+    "test": "node test"
   },
   "repository": {
     "type": "git",

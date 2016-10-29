@@ -18,13 +18,13 @@
   },
   "devDependencies": {
     "bluebird": "^3.4.6",
+	"express": "^4.14.0",
     "mysql": "^2.6.2",
     "pg": "^6.1.0",
     "sqlite3": "^3.0.7",
     "tape": "^4.0.0"
   },
   "dependencies": {
-    "express": "^4.14.0",
     "express-brute": "^1.0.0",
     "knex": "^0.12.2",
     "lodash": "^4.16.3"

@@ -1,8 +1,10 @@
 const ExpressBrute = require('express-brute');
-const BruteKnex = require('brute-knex');
+const BruteKnex = require('.');
 const Knex = require('knex');
 
-var store = new BruteKnex();
+var store = new BruteKnex({
+	createTable: true
+});
 
 const bruteforce = new ExpressBrute(store, {
   freeRetries: 2

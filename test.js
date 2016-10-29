@@ -67,7 +67,8 @@ Promise.join((function () {
 // finally to ignore drop tables that don't exist errors
 function () {
   const sqlitestore = new KnexStore({
-    knex: sqliteknex
+    knex: sqliteknex,
+    createTable: true
   });
 
   const postgresstore = new KnexStore({

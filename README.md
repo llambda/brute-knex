@@ -23,7 +23,8 @@ Refer to the [example application](https://github.com/llambda/brute-knex/blob/ma
 
 ### Options
 
-- `tablename`         Table name (default 'brute') to store records in. Table will be created automatically if necessary.
+- `tablename`         Table name (default 'brute') to store records in.
+- `createTable`       Set to `false` (default `true`) to disable automatically creating `tablename` if it does not exist.
 - `knex`              knex instance to use. If not provided, defaults to a sqlite3 database named ./brute-knex.sqlite
 
 

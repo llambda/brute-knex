@@ -27,6 +27,14 @@ Refer to the [example application](https://github.com/llambda/brute-knex/blob/ma
 - `createTable`       Set to `false` (default `true`) to disable automatically creating `tablename` if it does not exist.
 - `knex`              knex instance to use. If not provided, defaults to a sqlite3 database named ./brute-knex.sqlite
 
+### Testing
+
+`yarn test`
+
+You can create a custom config file in the root folder.
+Take a look at the example config, which is the fallback.
+
+e.g. `config.testing-mysql.json`
 
 [npm-version-image]: https://img.shields.io/npm/v/brute-knex.svg
 [npm-downloads-image]: https://img.shields.io/npm/dm/brute-knex.svg

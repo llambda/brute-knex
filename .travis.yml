@@ -1,8 +1,13 @@
 language: node_js
 node_js:
-  - "0.12"
-  - "0.10"
-  - "iojs"
+  - "6"
+  - "8"
+
+env:
+  matrix:
+    - DB=sqlite3 NODE_ENV=travis-sqlite3
+    - DB=mysql NODE_ENV=travis-mysql
+    - DB=pg NODE_ENV=travis-pg
 
 before_script:
   - psql -c 'create database travis_ci_test;' -U postgres

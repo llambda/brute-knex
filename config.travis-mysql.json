@@ -1,0 +1,12 @@
+{
+  "database": {
+    "client": "mysql",
+    "connection": {
+      "host": "localhost",
+      "user": "travis",
+      "password": "",
+      "database": "travis",
+      "charset": "utf8"
+    }
+  }
+}

@@ -62,3 +62,12 @@ typings/
 
 # IDE
 .idea
+
+# DB
+*.sqlite
+*.db
+
+# config
+config.*.json
+!config.example.json
+!config.travis*.json

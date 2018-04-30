@@ -1,0 +1,12 @@
+{
+  "database": {
+    "client": "pg",
+    "connection": {
+      "host": "localhost",
+      "user": "travis",
+      "password": "",
+      "database": "travis_ci_test",
+      "charset": "utf8"
+    }
+  }
+}

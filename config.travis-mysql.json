@@ -5,7 +5,7 @@
       "host": "localhost",
       "user": "travis",
       "password": "",
-      "database": "travis",
+      "database": "brute_knex_mysql",
       "charset": "utf8"
     }
   }

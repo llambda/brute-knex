@@ -10,7 +10,10 @@
   "license": "ISC",
   "private": false,
   "scripts": {
-    "test": "node test"
+    "test": "mocha --report lcovonly -- test/*_spec.js"
+  },
+  "engine": {
+    "node": ">=6"
   },
   "repository": {
     "type": "git",
@@ -18,14 +21,17 @@
   },
   "devDependencies": {
     "bluebird": "^3.4.6",
-	"express": "^4.14.0",
+    "express": "^4.14.0",
+    "ghost-ignition": "^2.9.1",
+    "mocha": "^5.1.1",
     "mysql": "^2.6.2",
     "pg": "^6.1.0",
-    "sqlite3": "^3.0.7",
-    "tape": "^4.0.0"
+    "sqlite3": "^3.0.7"
   },
   "dependencies": {
     "express-brute": "^1.0.0",
-    "knex": "^0.12.2"
-  }
+    "knex": "^0.12.2",
+    "should": "^13.2.1"
+  },
+  "main": "lib/index.js"
 }

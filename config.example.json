@@ -1,0 +1,12 @@
+{
+  "database": {
+    "client": "mysql",
+    "connection": {
+      "host": "localhost",
+      "user": "root",
+      "password": "",
+      "database": "brute_knex",
+      "charset": "utf8"
+    }
+  }
+}

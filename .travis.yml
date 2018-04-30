@@ -2,7 +2,9 @@ language: node_js
 node_js:
   - "6"
   - "8"
-
+cache:
+  directories:
+    - node_modules
 env:
   matrix:
     - DB=sqlite3 NODE_ENV=travis-sqlite3
@@ -10,8 +12,8 @@ env:
     - DB=pg NODE_ENV=travis-pg
 
 before_script:
-  - psql -c 'create database travis_ci_test;' -U postgres
-  - mysql -e 'create database travis;'
+  - if [ $DB == "mysql" ]; then mysql -e 'create database brute_knex_mysql'; fi
+  - if [ $DB == "pg" ]; then psql -c 'create database brute_knex_pg;' -U postgres; fi
 
 addons:
   postgresql: "9.3"

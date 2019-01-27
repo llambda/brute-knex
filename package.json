@@ -1,6 +1,6 @@
 {
   "name": "brute-knex",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "A Knex.js store for express-brute",
   "keywords": [
     "express",

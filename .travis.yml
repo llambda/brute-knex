@@ -2,6 +2,8 @@ language: node_js
 node_js:
   - "6"
   - "8"
+  - "10"
+  - "12"
 cache:
   directories:
     - node_modules
@@ -15,5 +17,9 @@ before_script:
   - if [ $DB == "mysql" ]; then mysql -e 'create database brute_knex_mysql'; fi
   - if [ $DB == "pg" ]; then psql -c 'create database brute_knex_pg;' -U postgres; fi
 
+services:
+  - mysql
+  - postgresql
+
 addons:
-  postgresql: "9.3"
+  postgresql: "9.6"

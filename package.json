@@ -14,7 +14,7 @@
     "test": "yarn lint && mocha --report lcovonly -- test/*_spec.js"
   },
   "engine": {
-    "node": ">=6"
+    "node": ">=8"
   },
   "repository": {
     "type": "git",

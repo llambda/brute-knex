@@ -33,7 +33,7 @@
   },
   "dependencies": {
     "express-brute": "^1.0.1",
-    "knex": "^0.17"
+    "knex": "^0.19.0"
   },
   "main": "lib",
   "files": [
